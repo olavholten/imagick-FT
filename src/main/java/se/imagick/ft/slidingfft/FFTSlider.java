@@ -7,7 +7,7 @@ package se.imagick.ft.slidingfft;
  * The filter latancy in samples (and number of samples used for the calculation)
  * can be calculated by:
  *
- * [the number of channels] * 2.
+ * [the number of frequency components] * 2.
  *
  * The DC component (frequency 0) is added automatically.
  * To use with multi channel samples, see FFTSliderFilter.

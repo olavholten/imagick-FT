@@ -33,7 +33,8 @@ public class FFTSliderFilter{
     private final double noofChannels;
 
     /**
-     * @param noofFrequencies How many frequencies the samples should
+     * @param noofFrequencies How many frequency components to use. One extra will added automatically for the
+     *                        dc-component.
      * @param noofChannels The number of channels (2 for a stereo signal).
      */
     public FFTSliderFilter(int noofFrequencies, int noofChannels){
