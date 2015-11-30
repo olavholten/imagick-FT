@@ -6,7 +6,9 @@ import org.junit.Test;
 public class DFTSliderTest{
 
     private double[] comp1 = new double[]{1, 0.7071d, 0, -0.7071, -1, -0.7071, 0, 0.7071};
+    private double[] comp1PhasedPlus90 = new double[]{0, -0.7071, -1, -0.7071, 0, 0.7071, 1, 0.7071d};
     private double[] comp2 = new double[]{1, 0, -1, 0, 1, 0, -1, 0};
+    private double[] comp2PhasedMinus90 = new double[]{0, 1, 0, -1, 0, 1, 0, -1};
     private double[] comp3 = new double[]{1.0, -0.7071, 0.0, 0.7071, -1.0, 0.7071, 0.0, -0.7071};
     private double[] comp4 = new double[]{1, -1, 1, -1, 1, -1, 1, -1};
 
@@ -39,10 +41,24 @@ public class DFTSliderTest{
     }
 
     @Test
+    public void test23(){
+        DFTSlider slider = getSlderWithComponents(3, comp2, comp3);
+        println(slider);
+        verifyAmplitude(slider, 3, 0, 1, 1, 0);
+    }
+
+    @Test
     public void testJustNegDc(){
         DFTSlider slider = getSlderWithComponents(-8);
         println(slider);
         verifyAmplitude(slider, -8, 0, 0, 0, 0);
+    }
+
+    @Test
+    public void test2Phased(){
+        DFTSlider slider = getSlderWithComponents(4, comp1PhasedPlus90, comp2PhasedMinus90);
+        println(slider);
+        verifyAmplitude(slider, 4, 1, 1, 0, 0);
     }
 
     private DFTSlider getSlderWithComponents(double dc, double[]... componens){
@@ -73,7 +89,7 @@ public class DFTSliderTest{
     private void println(DFTSlider slider){
         for(int i = 0; i < slider.getNoofFrequencies(); i++){
             double amp = round(slider.getAmplitude(i));
-            double phase = round((slider.getPhase(i)* 360 / (2d * Math.PI)) % 360);
+            double phase = round(amp == 0? 0 : (slider.getPhase(i)* 360 / (2d * Math.PI)) % 360);
             System.out.println("[" + amp + ", " + phase + "]");
         }
 
