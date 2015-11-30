@@ -1,8 +1,8 @@
-package se.imagick.ft.slidingfft;
+package se.imagick.ft.slidingdft;
 
 /**
- * Entrypoint for calculating multi channel sliding FFT.
- * For details about single channel Sliding FFT see FFTSlider.
+ * Entrypoint for calculating multi channel sliding DFT.
+ * For details about single channel Sliding DFT see DFTSlider.
  *
  * ---------------------
  * The MIT License (MIT)
@@ -27,9 +27,9 @@ package se.imagick.ft.slidingfft;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-public class FFTSliderFilter{
+public class DFTSliderFilter{
 
-    private final FFTSlider[] channelSliders;
+    private final DFTSlider[] channelSliders;
     private final double noofChannels;
 
     /**
@@ -37,12 +37,12 @@ public class FFTSliderFilter{
      *                        dc-component.
      * @param noofChannels The number of channels (2 for a stereo signal).
      */
-    public FFTSliderFilter(int noofFrequencies, int noofChannels){
+    public DFTSliderFilter(int noofFrequencies, int noofChannels){
         this.noofChannels = (double)noofChannels;
-        this.channelSliders = new FFTSlider[(int)noofChannels];
+        this.channelSliders = new DFTSlider[(int)noofChannels];
 
         for(int i = 0; i < channelSliders.length; i++){
-            channelSliders[i] = new FFTSlider(noofFrequencies);
+            channelSliders[i] = new DFTSlider(noofFrequencies);
         }
     }
 

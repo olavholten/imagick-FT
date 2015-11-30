@@ -1,4 +1,4 @@
-package se.imagick.ft.slidingfft;
+package se.imagick.ft.slidingdft;
 
 import se.imagick.ft.common.Complex;
 import se.imagick.ft.common.FTUtils;
@@ -30,13 +30,13 @@ import se.imagick.ft.common.Polar;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-public class FFTSliderFrequency{
+public class DFTSliderFrequency{
     private final double turnDegrees;
     private final Complex complex;
     private final Polar polar;
     private final double multiplier;
 
-    public FFTSliderFrequency(final double noofFreq, final double freqNo){
+    public DFTSliderFrequency(final double noofFreq, final double freqNo){
         this.turnDegrees = (Math.PI / noofFreq) * freqNo;
         this.complex = new Complex();
         this.polar = new Polar();
