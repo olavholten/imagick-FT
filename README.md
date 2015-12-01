@@ -1,5 +1,5 @@
 # imagick-FT
-Java Fourier Utils, Sliding FFT.
+Java Fourier Utils, Sliding DFT.
 
 The MIT License (MIT)
 Copyright (c) 2015 Olav Holten
