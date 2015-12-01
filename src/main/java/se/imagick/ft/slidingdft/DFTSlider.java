@@ -45,8 +45,7 @@ public class DFTSlider{
         this.noofSamples = noofFrequencies * 2d;
 
         for(int i = 0; i < noofFrequencies + 1; i++){
-            sliderFrequencies[i] = (i == 0)?new DFTSliderZeroFrequency(noofFrequencies, i) : new DFTSliderFrequency
-                    (noofFrequencies, i);
+            sliderFrequencies[i] = new DFTSliderFrequency(noofFrequencies, i);
         }
     }
 

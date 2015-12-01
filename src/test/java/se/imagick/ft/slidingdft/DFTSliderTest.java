@@ -37,7 +37,10 @@ public class DFTSliderTest{
     public void test1234CompNegDc(){
         DFTSlider slider = getSlderWithComponents(-8, comp1, comp2, comp3, comp4);
         println(slider);
-        verifyAmplitude(slider, -8, 1, 1, 1, 1);
+        verifyAmplitude(slider, 8, 1, 1, 1, 1);
+        Assert.assertEquals(slider.getReal(0), -8, 0.1);
+        Assert.assertEquals(slider.getImaginary(0), 0, 0.1);
+        Assert.assertEquals(slider.getPhase(0) * 360 / (2 * Math.PI), 180, 0.1);
     }
 
     @Test
@@ -51,7 +54,9 @@ public class DFTSliderTest{
     public void testJustNegDc(){
         DFTSlider slider = getSlderWithComponents(-8);
         println(slider);
-        verifyAmplitude(slider, -8, 0, 0, 0, 0);
+        verifyAmplitude(slider, 8, 0, 0, 0, 0);
+        Assert.assertEquals(slider.getReal(0), -8, 0.1);
+        Assert.assertEquals(slider.getPhase(0) * 360 / (2 * Math.PI), 180, 0.1);
     }
 
     @Test
