@@ -3,7 +3,7 @@ package se.imagick.ft.slidingdft;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class DFTSliderTest{
+public class DFTSliderCompactTest{
 
     private double[] comp1 = new double[]{1, 0.7071d, 0, -0.7071, -1, -0.7071, 0, 0.7071};
     private double[] comp1PhasedPlus90 = new double[]{0, -0.7071, -1, -0.7071, 0, 0.7071, 1, 0.7071d};
@@ -14,25 +14,43 @@ public class DFTSliderTest{
 
     @Test
     public void testComp1(){
-        DFTSlider slider = getSliderWithComponents(2, comp1);
+        DFTSliderCompact slider = getSliderWithComponents(2, comp1);
+        println(slider);
         verifyAmplitude(slider, 2, 1, 0, 0, 0);
+    }
+
+//    @Test
+    public void testCapacity(){
+        DFTSliderCompact slider = getSliderWithComponents(2, comp1);
+        long start = System.currentTimeMillis();
+        double[] tot = addRealComponents(comp1, comp2, comp4);
+        for(int i = 0; i < 44100 * 10 * 2;i++) {
+            slideAll(slider, tot, 3d);
+        }
+
+        long stop = System.currentTimeMillis();
+
+        System.out.println("************* Time: " + ((stop - start) / 1000d));
     }
 
     @Test
     public void test124Comp(){
-        DFTSlider slider = getSliderWithComponents(5, comp1, comp2, comp4);
+        DFTSliderCompact slider = getSliderWithComponents(5, comp1, comp2, comp4);
+        println(slider);
         verifyAmplitude(slider, 5, 1, 1, 0, 1);
     }
 
     @Test
     public void test1234Comp(){
-        DFTSlider slider = getSliderWithComponents(8, comp1, comp2, comp3, comp4);
+        DFTSliderCompact slider = getSliderWithComponents(8, comp1, comp2, comp3, comp4);
+        println(slider);
         verifyAmplitude(slider, 8, 1, 1, 1, 1);
     }
 
     @Test
     public void test1234CompNegDc(){
-        DFTSlider slider = getSliderWithComponents(-8, comp1, comp2, comp3, comp4);
+        DFTSliderCompact slider = getSliderWithComponents(-8, comp1, comp2, comp3, comp4);
+        println(slider);
         verifyAmplitude(slider, 8, 1, 1, 1, 1);
         Assert.assertEquals(slider.getReal(0), -8, 0.1);
         Assert.assertEquals(slider.getImaginary(0), 0, 0.1);
@@ -41,13 +59,15 @@ public class DFTSliderTest{
 
     @Test
     public void test23(){
-        DFTSlider slider = getSliderWithComponents(3, comp2, comp3);
+        DFTSliderCompact slider = getSliderWithComponents(3, comp2, comp3);
+        println(slider);
         verifyAmplitude(slider, 3, 0, 1, 1, 0);
     }
 
     @Test
     public void testJustNegDc(){
-        DFTSlider slider = getSliderWithComponents(-8);
+        DFTSliderCompact slider = getSliderWithComponents(-8);
+        println(slider);
         verifyAmplitude(slider, 8, 0, 0, 0, 0);
         Assert.assertEquals(slider.getReal(0), -8, 0.1);
         Assert.assertEquals(slider.getPhase(0) * 360 / (2 * Math.PI), 180, 0.1);
@@ -55,26 +75,13 @@ public class DFTSliderTest{
 
     @Test
     public void test2Phased(){
-        DFTSlider slider = getSliderWithComponents(4, comp1PhasedPlus90, comp2PhasedMinus90);
+        DFTSliderCompact slider = getSliderWithComponents(4, comp1PhasedPlus90, comp2PhasedMinus90);
+        println(slider);
         verifyAmplitude(slider, 4, 1, 1, 0, 0);
     }
 
-    //    @Test
-    //    public void testCapacity(){
-    //        DFTSlider slider = getSliderWithComponents(2, comp1);
-    //        double[] tot = addRealComponents(comp1, comp2, comp4);
-    //        long start = System.currentTimeMillis();
-    //        for(int i = 0; i < 44100 * 10 * 2;i++) {
-    //            slideAll(slider, tot, 3d);
-    //        }
-    //
-    //        long stop = System.currentTimeMillis();
-    //
-    //        System.out.println("************* Time: " + ((stop - start) / 1000d));
-    //    }
-
-    private DFTSlider getSliderWithComponents(double dc, double[]... components){
-        DFTSlider slider = new DFTSlider(4);
+    private DFTSliderCompact getSliderWithComponents(double dc, double[]... components){
+        DFTSliderCompact slider = new DFTSliderCompact(4);
         double[] tot = addRealComponents(components);
         slideAll(slider, tot, dc);
 
@@ -96,34 +103,34 @@ public class DFTSliderTest{
         }
     }
 
-    private void slideAll(DFTSlider slider, double[] tot, double dc){
+    private void slideAll(DFTSliderCompact slider, double[] tot, double dc){
         for(double value:tot){
             slider.slide(value + dc);
         }
     }
 
-    private void verifyAmplitude(DFTSlider slider, double... values){
+    private void println(DFTSliderCompact slider){
+        for(int i = 0; i < slider.getNoofComplex(); i++){
+            double amp = round(slider.getAmplitude(i));
+            double phase = round(getPhaseInDegrees(slider, i, amp));
+            System.out.println("[" + amp + ", " + phase + "]");
+        }
+
+        System.out.println("---------");
+    }
+
+    private double getPhaseInDegrees(DFTSliderCompact slider, int i, double amp){
+        double degrees = (amp == 0)?0 : (((slider.getPhase(i) * 360) / (2d * Math.PI)) % 360);
+        return (degrees > 180)?degrees -360 : degrees;
+    }
+
+    private double round(double value) {
+        return (((double)((int) (value * 100d + ((value > 0)?0.5d:-0.5d)))) / 100d);
+    }
+
+    private void verifyAmplitude(DFTSliderCompact slider, double... values){
         for(int i = 0; i < values.length; i++) {
             Assert.assertEquals("Component no: " + i, values[i], slider.getAmplitude(i), 0.1);
         }
     }
-
-//    private void println(DFTSlider slider){
-//        for(int i = 0; i < slider.getNoofFrequencies(); i++){
-//            double amp = round(slider.getAmplitude(i));
-//            double phase = round(getPhaseInDegrees(slider, i, amp));
-//            System.out.println("[" + amp + ", " + phase + "]");
-//        }
-//
-//        System.out.println("---------");
-//    }
-
-//    private double getPhaseInDegrees(DFTSlider slider, int i, double amp){
-//        double degrees = (amp == 0)?0 : (((slider.getPhase(i) * 360) / (2d * Math.PI)) % 360);
-//        return (degrees > 180)?degrees -360 : degrees;
-//    }
-
-//    private double round(double value) {
-//        return (((double)((int) (value * 100d + ((value > 0)?0.5d:-0.5d)))) / 100d);
-//    }
 }
