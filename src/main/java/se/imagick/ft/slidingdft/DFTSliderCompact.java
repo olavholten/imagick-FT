@@ -1,7 +1,8 @@
 package se.imagick.ft.slidingdft;
 
 /**
- * Compact version of the slider.
+ * Compact version of the slider, using only one class.
+ * Slightly, slightly faster but harder to understand.
  *
  * ---------------------
  * The MIT License (MIT)
@@ -34,14 +35,14 @@ public class DFTSliderCompact{
     private final double[] phase;
     private final double[] multi;
     private final double[] turn;
-    private double outValue;
+    private double realSum;
     private final double noofSamples;
     private final double noofComplex;
 
     public DFTSliderCompact(int noofFrequencies){
 
         double turnBase = Math.PI * 2d / noofFrequencies;
-        this.outValue = 0d;
+        this.realSum = 0d;
         this.noofSamples = noofFrequencies * 2d;
         this.noofComplex = noofFrequencies + 1d; // +1 = dc, see DFT-principles.
         real = new double[(int)this.noofComplex];
@@ -58,8 +59,8 @@ public class DFTSliderCompact{
     }
 
     public void slide(double inValue){
-        double newVal = (inValue - this.outValue) / this.noofSamples;
-        this.outValue = 0d;
+        double newVal = (inValue - this.realSum) / this.noofSamples;
+        this.realSum = 0d;
 
         for(int i = 0; i < noofComplex; i++){
             real[i] += newVal * multi[i];
@@ -71,7 +72,7 @@ public class DFTSliderCompact{
             phase[i] = phs;
             real[i] = Math.cos(phs) * mag;
             imag[i] = Math.sin(phs) * mag;
-            this.outValue += real[i];
+            this.realSum += real[i];
         }
     }
 
@@ -93,5 +94,9 @@ public class DFTSliderCompact{
 
     public double getNoofComplex(){
         return noofComplex;
+    }
+
+    public double getRealSum() {
+        return realSum;
     }
 }

@@ -30,8 +30,8 @@ package se.imagick.ft.slidingdft;
 public class DFTSliderFilter{
 
     private final DFTSlider[] channelSliders;
-    private final double noofChannels;
 
+    private final double noofChannels;
     /**
      * @param noofFrequencies How many frequency components to use. One extra will added automatically for the
      *                        dc-component.
@@ -52,5 +52,35 @@ public class DFTSliderFilter{
                 sample[channel] = channelSliders[channel].slide(sample[channel]);
             }
         }
+    }
+
+    public DFTSlider[] getChannelSliders() {
+        return channelSliders;
+    }
+
+    public double[] getRealSum() {
+        double[] sample = new double[channelSliders.length];
+
+        for(int channel = 0; channel < channelSliders.length; channel++) {
+            sample[channel] = channelSliders[channel].getRealSum();
+        }
+
+        return sample;
+    }
+
+    public double getAmplitude(int channelNo, int componentNo){
+        return channelSliders[channelNo].getAmplitude(componentNo);
+    }
+
+    public double getPhase(int channelNo, int componentNo){
+        return channelSliders[channelNo].getPhase(componentNo);
+    }
+
+    public double getImaginary(int channelNo, int componentNo) {
+        return channelSliders[channelNo].getImaginary(componentNo);
+    }
+
+    public double getReal(int channelNo, int componentNo) {
+        return channelSliders[channelNo].getReal(componentNo);
     }
 }

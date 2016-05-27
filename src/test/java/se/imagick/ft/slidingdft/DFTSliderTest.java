@@ -59,20 +59,6 @@ public class DFTSliderTest{
         verifyAmplitude(slider, 4, 1, 1, 0, 0);
     }
 
-    //    @Test
-    //    public void testCapacity(){
-    //        DFTSlider slider = getSliderWithComponents(2, comp1);
-    //        double[] tot = addRealComponents(comp1, comp2, comp4);
-    //        long start = System.currentTimeMillis();
-    //        for(int i = 0; i < 44100 * 10 * 2;i++) {
-    //            slideAll(slider, tot, 3d);
-    //        }
-    //
-    //        long stop = System.currentTimeMillis();
-    //
-    //        System.out.println("************* Time: " + ((stop - start) / 1000d));
-    //    }
-
     private DFTSlider getSliderWithComponents(double dc, double[]... components){
         DFTSlider slider = new DFTSlider(4);
         double[] tot = addRealComponents(components);
@@ -96,9 +82,9 @@ public class DFTSliderTest{
         }
     }
 
-    private void slideAll(DFTSlider slider, double[] tot, double dc){
-        for(double value:tot){
-            slider.slide(value + dc);
+    private void slideAll(DFTSlider slider, double[] samples, double dc){
+        for(double sample:samples){
+            slider.slide(sample + dc);
         }
     }
 
