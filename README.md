@@ -1,5 +1,20 @@
 # imagick-FT
 Java Fourier Utils, Sliding DFT.
+When analysing a moving window the Sliding DFT / DCT is much more efficient than
+using FFT.
+
+##Usage is simple:
+
+DFTSlider slider = new DFTSlider(noOfFrequencies); // One component will be added for the dc.
+
+slider.slide(douleValue);
+
+slider.getAmplitude(componentNo);
+
+slider.getPhase(componentNo);
+
+
+## Licence:
 
 The MIT License (MIT)
 Copyright (c) 2015 Olav Holten
