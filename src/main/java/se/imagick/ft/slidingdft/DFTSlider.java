@@ -1,16 +1,18 @@
 package se.imagick.ft.slidingdft;
 
 /**
- * A Java implementation of the DFT-Slider. It is used to re-calculate a FTT
- * for each sample added. The data is added one by one. All frequences have
- * zero amplitude and zero phase before sliding samples into the sliders.
- * The filter latancy in samples (and number of samples used for the calculation)
- * can be calculated by:
+ * A Java implementation of the DFT-Slider. It is used to re-calculate a FT
+ * for a moving window, one sample at a time. This is conciderably more efficient
+ * than re-calculating the current window with FFT. The data is added one by one. 
+ * All frequences have zero amplitude and zero phase before sliding samples into the 
+ * sliders. This however introduces a latancy. The filter latancy in samples 
+ * (and number of samples used for the calculation) can be calculated by:
  * <p/>
  * [the number of frequency components] * 2.
  * <p/>
  * The DC component (frequency 0) is added automatically.
- * To use with multi channel samples, see DFTSliderFilter.
+ * To use with multi channel samples, see DFTSliderFilter, which whaps the needed number
+ * of DFTSliders (EG 2 for a stereo sound signal).
  * <p/>
  * ---------------------
  * The MIT License (MIT)

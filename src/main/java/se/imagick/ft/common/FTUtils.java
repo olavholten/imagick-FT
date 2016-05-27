@@ -1,7 +1,7 @@
 package se.imagick.ft.common;
 
 /**
- * Utility methods for Complex-Polar conversions.
+ * Utility methods for Complex-Polar / Polar-Complex conversions.
  *
  * ---------------------
  * The MIT License (MIT)
