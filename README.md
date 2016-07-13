@@ -20,7 +20,7 @@ Just add the following dependency in your pom-file:
     <dependency>
         <groupId>se.imagick</groupId>
         <artifactId>ft</artifactId>
-        <version>1.1</version>
+        <version>1.2</version>
     </dependency>
 
 NB! Only positive frequencies are calculated.
