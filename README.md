@@ -13,6 +13,8 @@ slider.getAmplitude(componentNo);
 
 slider.getPhase(componentNo);
 
+NB! Only positive frequencies are used.
+
 
 ## Licence:
 
