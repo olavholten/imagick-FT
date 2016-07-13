@@ -3,6 +3,7 @@ package se.imagick.ft.slidingdft;
 /**
  * Compact version of the slider, using only one class.
  * Slightly, slightly faster but harder to understand.
+ * Only positive frequencies are calculated.
  *
  * ---------------------
  * The MIT License (MIT)

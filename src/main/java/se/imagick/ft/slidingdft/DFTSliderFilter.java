@@ -1,7 +1,7 @@
 package se.imagick.ft.slidingdft;
 
 /**
- * Entrypoint for calculating multi channel sliding DFT.
+ * Entry point for calculating multi channel sliding DFT.
  * For details about single channel Sliding DFT see DFTSlider.
  *
  * ---------------------
@@ -39,13 +39,17 @@ public class DFTSliderFilter{
      */
     public DFTSliderFilter(int noofFrequencies, int noofChannels){
         this.noofChannels = (double)noofChannels;
-        this.channelSliders = new DFTSlider[(int)noofChannels];
+        this.channelSliders = new DFTSlider[noofChannels];
 
         for(int i = 0; i < channelSliders.length; i++){
             channelSliders[i] = new DFTSlider(noofFrequencies);
         }
     }
 
+    /**
+     * Slide in one sample.
+     * @param sample One sample. One array element per channel, EG. sample[0] = left, sample[1] = right).
+     */
     public void slide(double[] sample){
         if(sample != null){
             for(int channel = 0; channel < noofChannels; channel++){
@@ -54,10 +58,18 @@ public class DFTSliderFilter{
         }
     }
 
+    /**
+     * Retrieves the sliders (one for each channel).
+     * @return The sliders for all channels.
+     */
     public DFTSlider[] getChannelSliders() {
         return channelSliders;
     }
 
+    /**
+     * Retrieves the real sum for all frequencies for sample 0 in the buffer (one array element per channel).
+     * @return The real sum for all frequencies per channel for sample 0 (EG sample[0] = left, sample[1] = right).
+     */
     public double[] getRealSum() {
         double[] sample = new double[channelSliders.length];
 
