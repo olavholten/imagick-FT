@@ -17,6 +17,15 @@
         </license>
     </licenses>
 
+    <issueManagement>
+        <url>https://github.com/olavholten/imagick-FT/issues</url>
+        <system>GitHub Issues</system>
+    </issueManagement>
+
+    <scm>
+        <url>https://github.com/olavholten/imagick-FT</url>
+    </scm>
+
     <build>
         <plugins>
             <plugin>
