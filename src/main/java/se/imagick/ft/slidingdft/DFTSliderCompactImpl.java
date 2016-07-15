@@ -1,7 +1,7 @@
 package se.imagick.ft.slidingdft;
 
 /**
- * Compact version of the slider, using only one class.
+ * This is a compact version of the slider, using only one class.
  * Slightly, slightly faster but harder to understand.
  * Only positive frequencies are calculated.<br>
  * <br>
@@ -28,7 +28,7 @@ package se.imagick.ft.slidingdft;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-public class DFTSliderCompact{
+public class DFTSliderCompactImpl implements DFTSlider{
 
     private final double[] real;
     private final double[] imag;
@@ -40,7 +40,7 @@ public class DFTSliderCompact{
     private final double noofSamples;
     private final double noofComplex;
 
-    public DFTSliderCompact(int noofFrequencies){
+    public DFTSliderCompactImpl(int noofFrequencies){
 
         double turnBase = Math.PI * 2d / noofFrequencies;
         this.realSum = 0d;
@@ -59,7 +59,7 @@ public class DFTSliderCompact{
         }
     }
 
-    public void slide(double inValue){
+    public double slide(double inValue){
         double newVal = (inValue - this.realSum) / this.noofSamples;
         this.realSum = 0d;
 
@@ -75,20 +75,36 @@ public class DFTSliderCompact{
             imag[i] = Math.sin(phs) * mag;
             this.realSum += real[i];
         }
+
+        return realSum;
     }
 
+    @Override
+    public int getNoOfFrequencies() {
+        return 0;
+    }
+
+    @Override
+    public int getLatencyInSamples() {
+        return 0;
+    }
+
+    @Override
     public double getAmplitude(int componentNo){
         return  magni[componentNo];
     }
 
+    @Override
     public double getPhase(int componentNo){
         return phase[componentNo];
     }
 
+    @Override
     public double getReal(int componentNo){
         return real[componentNo];
     }
 
+    @Override
     public double getImaginary(int componentNo){
         return imag[componentNo];
     }
@@ -97,6 +113,7 @@ public class DFTSliderCompact{
         return noofComplex;
     }
 
+    @Override
     public double getRealSum() {
         return realSum;
     }

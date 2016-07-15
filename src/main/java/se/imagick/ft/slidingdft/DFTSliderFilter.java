@@ -2,7 +2,7 @@ package se.imagick.ft.slidingdft;
 
 /**
  * Entry point for calculating multi channel sliding DFT.
- * For details about single channel Sliding DFT see DFTSlider.<br>
+ * For details about single channel Sliding DFT see DFTSliderImpl.<br>
  * <br>
  * ---------------------<br>
  * The MIT License (MIT)<br>
@@ -42,7 +42,7 @@ public class DFTSliderFilter{
         this.channelSliders = new DFTSlider[noofChannels];
 
         for(int i = 0; i < channelSliders.length; i++){
-            channelSliders[i] = new DFTSlider(noofFrequencies);
+            channelSliders[i] = new DFTSliderImpl(noofFrequencies);
         }
     }
 

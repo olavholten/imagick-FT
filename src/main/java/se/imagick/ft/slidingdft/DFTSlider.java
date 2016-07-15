@@ -1,10 +1,10 @@
 package se.imagick.ft.slidingdft;
 
 /**
- * A Java implementation of the DFT-Slider. It is used to re-calculate a FT
- * for a moving window, one sample at a time. This is conciderably more efficient
+ * Interface for a Java implementation of the DFT-Slider. It is used to re-calculate
+ * a FT for a moving window, one sample at a time. This is considerably more efficient
  * than re-calculating the current window with FFT. The data is added one by one.
- * All frequences have zero amplitude and zero phase before sliding samples into the
+ * All frequencies have zero amplitude and zero phase before sliding samples into the
  * sliders. This however introduces a latancy. The filter latancy in samples
  * (and number of samples used for the calculation) can be calculated by:<br>
  * <br>
@@ -39,64 +39,20 @@ package se.imagick.ft.slidingdft;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-public class DFTSlider{
-    private final DFTSliderFrequency[] sliderFrequencies;
-    private final double noofSamples;
-    private double lastOutValue;
+public interface DFTSlider {
+    double slide(double value);
 
-    public DFTSlider(int noofFrequencies){
-        this.sliderFrequencies = new DFTSliderFrequency[noofFrequencies + 1]; // The +1 is dc
-        this.noofSamples = noofFrequencies * 2d;
+    int getNoOfFrequencies();
 
-        for(int i = 0; i < noofFrequencies + 1; i++){
-            sliderFrequencies[i] = new DFTSliderFrequency(noofFrequencies, i);
-        }
-    }
+    int getLatencyInSamples();
 
-    public double slide(double value){
-        double change = (value - lastOutValue) / noofSamples;
-        double outValue = 0d;
+    double getRealSum();
 
-        for(DFTSliderFrequency freq : sliderFrequencies){
-            freq.slide(change);
-            outValue += freq.getReal();
-        }
+    double getAmplitude(int componentNo);
 
-        lastOutValue = outValue;
-        return outValue;
-    }
+    double getPhase(int componentNo);
 
-    public int getNoofFrequencies(){
-        return sliderFrequencies.length;
-    }
+    double getReal(int componentNo);
 
-    public int getLatancyInSamples(){
-        return (int)noofSamples;
-    }
-
-    public double getRealSum(){
-        double outValue = 0d;
-
-        for(DFTSliderFrequency freq : sliderFrequencies){
-            outValue += freq.getReal();
-        }
-
-        return outValue;
-    }
-
-    public double getAmplitude(int componentNo){
-        return sliderFrequencies[componentNo].getAmplitude();
-    }
-
-    public double getPhase(int componentNo){
-        return sliderFrequencies[componentNo].getPhase();
-    }
-
-    public double getReal(int componentNo){
-        return sliderFrequencies[componentNo].getReal();
-    }
-
-    public double getImaginary(int componentNo){
-        return sliderFrequencies[componentNo].getImaginary();
-    }
+    double getImaginary(int componentNo);
 }
