@@ -6,30 +6,31 @@ package se.imagick.ft.slidingdft;
  * than re-calculating the current window with FFT. The data is added one by one.
  * All frequences have zero amplitude and zero phase before sliding samples into the
  * sliders. This however introduces a latancy. The filter latancy in samples
- * (and number of samples used for the calculation) can be calculated by:
- * <p/>
- * [the number of frequency components] * 2.
- * <p/>
+ * (and number of samples used for the calculation) can be calculated by:<br>
+ * <br>
+ * [the number of frequency components] * 2.<br>
+ * <br>
  * The DC component (frequency 0) is added automatically.
- * To use with multi channel samples, see DFTSliderFilter, which whaps the needed number
- * of DFTSliders (EG 2 for a stereo sound signal).
- * <p/>
- * NB! Only positive frequencies are calculated.
- * ---------------------
- * The MIT License (MIT)
- * <p/>
- * Copyright (c) 2015 Olav Holten
- * <p/>
+ * To use with multi channel samples, see DFTSliderFilter, which wraps the needed number
+ * of DFTSliders (EG 2 for a stereo sound signal).<br>
+ * <br>
+ * NB! Only positive frequencies are calculated.<br>
+ * <br>
+ * ---------------------<br>
+ * The MIT License (MIT)<br>
+ * <br>
+ * Copyright (c) 2015 Olav Holten<br>
+ * <br>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- * <p/>
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- * <p/>
+ * furnished to do so, subject to the following conditions:<br>
+ * <br>
+ * The above copyright notice and this permission notice shall be included in<br>
+ * all copies or substantial portions of the Software.<br>
+ * <br>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
