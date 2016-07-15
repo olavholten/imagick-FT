@@ -91,6 +91,8 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- -Dgpg.passphrase=thephrase-->
+
             <!--<plugin>-->
                 <!--<groupId>org.apache.maven.plugins</groupId>-->
                 <!--<artifactId>maven-gpg-plugin</artifactId>-->
