@@ -64,8 +64,9 @@ public interface DFTSlider {
     int getLatencyInSamples();
 
     /**
-     * Retrieves the real sum of all complex components (equals the current first sample in the buffer).
-     * @return The real sum of all complex components (equals the current first sample in the buffer).
+     * Retrieves the sum of the real part of all the frequency components
+     * (equals the current first sample in the buffer, about to be pushed out in the next slide).
+     * @return The sum of the real part of all the frequency components.
      */
     double getRealSum();
 
@@ -95,4 +96,6 @@ public interface DFTSlider {
      * @return The imaginary value of the specified component.
      */
     double getImaginary(int componentNo);
+
+
 }
