@@ -11,6 +11,7 @@ public abstract class DFTSliderTestParent {
     private double[] comp2PhasedMinus90 = new double[] {0, 1, 0, -1, 0, 1, 0, -1};
     private double[] comp3 = new double[] {1.0, -0.7071, 0.0, 0.7071, -1.0, 0.7071, 0.0, -0.7071};
     private double[] comp4 = new double[] {1, -1, 1, -1, 1, -1, 1, -1};
+    private double[] zeroSamples = new double[] {0, 0, 0, 0, 0, 0, 0, 0};
 
     @Test
     public void testComp1() {
@@ -61,7 +62,7 @@ public abstract class DFTSliderTestParent {
 
     @Test
     public void testJustNegDc() {
-        DFTSlider slider = getSliderWithComponents(-8);
+        DFTSlider slider = getSliderWithComponents(-8, zeroSamples);
         verifyAmplitude(slider, 8, 0, 0, 0, 0);
         Assert.assertEquals(slider.getReal(0), -8, 0.1);
         Assert.assertEquals(slider.getPhase(0) * 360 / (2 * Math.PI), 180, 0.1);
@@ -79,18 +80,18 @@ public abstract class DFTSliderTestParent {
     @Test
     public void testLatency() {
         DFTSlider slider = getSliderWithComponents(4, comp1PhasedPlus90, comp2PhasedMinus90);
-        Assert.assertEquals(8, slider.getLatencyInSamples());
+        Assert.assertEquals(comp1PhasedPlus90.length, slider.getLatencyInSamples());
     }
 
     @Test
     public void testNoOfFrequencies() {
         DFTSlider slider = getSliderWithComponents(4, comp1PhasedPlus90, comp2PhasedMinus90);
-        Assert.assertEquals(5, slider.getNoOfFrequencies());
+        Assert.assertEquals(((int)(comp1PhasedPlus90.length / 2d + 1)), slider.getNoOfFrequencies());
     }
 
-    private DFTSlider getSliderWithComponents(double dc, double[]... components) {
-        DFTSlider slider = new DFTSliderImpl(4);
-        double[] tot = addRealComponents(components);
+    private DFTSlider getSliderWithComponents(double dc, double[]... samplesSeries) {
+        DFTSlider slider = getSliderImpl(samplesSeries[0].length / 2);
+        double[] tot = addRealComponents(samplesSeries);
         slideAll(slider, tot, dc);
 
         return slider;

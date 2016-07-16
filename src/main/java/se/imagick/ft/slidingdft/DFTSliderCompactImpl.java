@@ -46,12 +46,12 @@ public class DFTSliderCompactImpl implements DFTSlider{
         this.realSum = 0d;
         this.noofSamples = noofFrequencies * 2d;
         this.noofComplex = noofFrequencies + 1d; // +1 = dc, see DFT-principles.
-        real = new double[(int)this.noofComplex];
-        imag = new double[(int)this.noofComplex];
-        magni = new double[(int)this.noofComplex];
-        phase = new double[(int)this.noofComplex];
-        multi = new double[(int)this.noofComplex];
-        turn = new double[(int)this.noofComplex];
+        this.real = new double[(int)this.noofComplex];
+        this.imag = new double[(int)this.noofComplex];
+        this.magni = new double[(int)this.noofComplex];
+        this.phase = new double[(int)this.noofComplex];
+        this.multi = new double[(int)this.noofComplex];
+        this.turn = new double[(int)this.noofComplex];
 
         for(int i = 0; i < this.noofComplex; i++){
             turn[i] = i * turnBase / 2d;
@@ -81,12 +81,12 @@ public class DFTSliderCompactImpl implements DFTSlider{
 
     @Override
     public int getNoOfFrequencies() {
-        return 0;
+        return (int)this.noofComplex;
     }
 
     @Override
     public int getLatencyInSamples() {
-        return 0;
+        return (int)this.noofSamples;
     }
 
     @Override
@@ -107,10 +107,6 @@ public class DFTSliderCompactImpl implements DFTSlider{
     @Override
     public double getImaginary(int componentNo){
         return imag[componentNo];
-    }
-
-    public double getNoofComplex(){
-        return noofComplex;
     }
 
     @Override
