@@ -67,10 +67,6 @@ public class Polar{
         return "[M:" + magnitude + "P:" + phase + "]";
     }
 
-    public static double getRad(final double deg){
-        return 2d * Math.PI * (deg / 360);
-    }
-
     public boolean equals(Polar that) {
         return (this.magnitude == that.magnitude) && (this.phase == that.phase);
     }

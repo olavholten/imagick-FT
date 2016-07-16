@@ -67,4 +67,34 @@ public class FTUtilsTest{
         Assert.assertTrue(p1.equals(p2));
     }
 
+    @Test
+    public void degrees2Radians(){
+        double degOrig = 45;
+        double rad = FTUtils.degrees2Radians(degOrig);
+        double degTransformed = FTUtils.radians2Degrees(rad);
+        Assert.assertEquals(degOrig, degTransformed, 0.01);
+    }
+
+    @Test
+    public void radians2Degrees(){
+        double radOrig = Math.PI;
+        double deg = FTUtils.radians2Degrees(radOrig);
+        double radTransformed = FTUtils.degrees2Radians(deg);
+        Assert.assertEquals(radOrig, radTransformed, 0.01);
+    }
+
+    @Test
+    public void radians2DegreesTwoPi(){
+        double radOrig = 2d * Math.PI;
+        double deg = FTUtils.radians2Degrees(radOrig);
+        Assert.assertEquals(deg, 360d, 0.01);
+    }
+
+    @Test
+    public void degrees2Radians90Deg(){
+        double degOrig = 90;
+        double rad = FTUtils.degrees2Radians(degOrig);
+        Assert.assertEquals(rad, Math.PI / 2d, 0.01);
+    }
+
 }

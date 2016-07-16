@@ -26,18 +26,30 @@ package se.imagick.ft.common;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-public class FTUtils{
-    public static void complex2Polar(final Complex complex, Polar polar){
+public class FTUtils {
+
+    public static final double RAD_TWO_PI = 2d * Math.PI;
+    public static final double DEG_360 = 360d;
+
+    public static void complex2Polar(final Complex complex, Polar polar) {
         final double real = complex.getReal();
         final double imag = complex.getImaginary();
         polar.setMagnitude(Math.sqrt(real * real + imag * imag));
         polar.setPhase(Math.atan2(imag, real));
     }
 
-    public static void polar2Complex(final Polar polar, final Complex complex){
+    public static void polar2Complex(final Polar polar, final Complex complex) {
         final double mag = polar.getMagnitude();
         final double phase = polar.getPhase();
         complex.setReal(Math.cos(phase) * mag);
         complex.setImaginary(Math.sin(phase) * mag);
+    }
+
+    public static double degrees2Radians(final double deg) {
+        return RAD_TWO_PI * (deg / DEG_360);
+    }
+
+    public static double radians2Degrees(final double rad) {
+        return (rad / RAD_TWO_PI) * DEG_360;
     }
 }
