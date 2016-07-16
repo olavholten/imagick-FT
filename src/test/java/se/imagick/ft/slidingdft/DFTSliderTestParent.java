@@ -14,35 +14,49 @@ public abstract class DFTSliderTestParent {
 
     @Test
     public void testComp1() {
-        DFTSlider slider = getSliderWithComponents(2, comp1);
-        verifyAmplitude(slider, 2, 1, 0, 0, 0);
+        int dc = 2;
+        DFTSlider slider = getSliderWithComponents(dc, comp1);
+        verifyAmplitude(slider, dc, 1, 0, 0, 0);
+        verifyRealSum(slider, dc, comp1);
     }
 
     @Test
     public void test124Comp() {
-        DFTSlider slider = getSliderWithComponents(5, comp1, comp2, comp4);
-        verifyAmplitude(slider, 5, 1, 1, 0, 1);
+        int dc = 5;
+        double[][] comps = {comp1, comp2, comp4};
+        DFTSlider slider = getSliderWithComponents(dc, comps);
+        verifyAmplitude(slider, dc, 1, 1, 0, 1);
+        verifyRealSum(slider, dc, comps);
     }
 
     @Test
     public void test1234Comp() {
-        DFTSlider slider = getSliderWithComponents(8, comp1, comp2, comp3, comp4);
-        verifyAmplitude(slider, 8, 1, 1, 1, 1);
+        int dc = 8;
+        double[][] comps = {comp1, comp2, comp3, comp4};
+        DFTSlider slider = getSliderWithComponents(dc, comps);
+        verifyAmplitude(slider, dc, 1, 1, 1, 1);
+        verifyRealSum(slider, dc, comps);
     }
 
     @Test
     public void test1234CompNegDc() {
-        DFTSlider slider = getSliderWithComponents(-8, comp1, comp2, comp3, comp4);
+        double[][] comps = {comp1, comp2, comp3, comp4};
+        int dc = -8;
+        DFTSlider slider = getSliderWithComponents(dc, comps);
         verifyAmplitude(slider, 8, 1, 1, 1, 1);
-        Assert.assertEquals(slider.getReal(0), -8, 0.1);
+        verifyRealSum(slider, dc, comps);
+        Assert.assertEquals(slider.getReal(0), dc, 0.1);
         Assert.assertEquals(slider.getImaginary(0), 0, 0.1);
         Assert.assertEquals(slider.getPhase(0) * 360 / (2 * Math.PI), 180, 0.1);
     }
 
     @Test
     public void test23() {
-        DFTSlider slider = getSliderWithComponents(3, comp2, comp3);
-        verifyAmplitude(slider, 3, 0, 1, 1, 0);
+        int dc = 3;
+        double[][] comps = {comp2, comp3};
+        DFTSlider slider = getSliderWithComponents(dc, comps);
+        verifyAmplitude(slider, dc, 0, 1, 1, 0);
+        verifyRealSum(slider, dc, comps);
     }
 
     @Test
@@ -55,8 +69,11 @@ public abstract class DFTSliderTestParent {
 
     @Test
     public void test2Phased() {
-        DFTSlider slider = getSliderWithComponents(4, comp1PhasedPlus90, comp2PhasedMinus90);
-        verifyAmplitude(slider, 4, 1, 1, 0, 0);
+        int dc = 4;
+        double[][] comps = {comp1PhasedPlus90, comp2PhasedMinus90};
+        DFTSlider slider = getSliderWithComponents(dc, comps);
+        verifyAmplitude(slider, dc, 1, 1, 0, 0);
+        verifyRealSum(slider, dc, comps);
     }
 
     @Test
@@ -104,6 +121,16 @@ public abstract class DFTSliderTestParent {
         for(int i = 0; i < values.length; i++) {
             Assert.assertEquals("Component no: " + i, values[i], slider.getAmplitude(i), 0.1);
         }
+    }
+
+    private void verifyRealSum(DFTSlider slider, double dc, double[]... components) {
+        double sum = dc;
+
+        for(double[] component : components) {
+            sum += component[0];
+        }
+
+        Assert.assertEquals(slider.getRealSum(), sum, 0.1d);
     }
 
     private double round(double value) {

@@ -40,19 +40,59 @@ package se.imagick.ft.slidingdft;
  * THE SOFTWARE.
  */
 public interface DFTSlider {
+
+    /**
+     * Slides a sample in last in the buffer and removed the first.
+     *
+     * @param value The value that is to be slid in to the buffer in the last position.
+     * @return The current first sample value (not the sample value being pushed out).
+     * This will be the same value as will be returned getRealSum();
+     */
     double slide(double value);
 
+    /**
+     * Retrieves the number of frequency components (including the added dc component).
+     * @return The number of frequencies that the the slider got initiated with plus one
+     * (the 0 frequency, DC-component).
+     */
     int getNoOfFrequencies();
 
+    /**
+     * Retrieves the number of samples in the buffer (getNoOfFrequencies() - 1) * 2)
+     * @return The latency in samples.
+     */
     int getLatencyInSamples();
 
+    /**
+     * Retrieves the real sum of all complex components (equals the current first sample in the buffer).
+     * @return The real sum of all complex components (equals the current first sample in the buffer).
+     */
     double getRealSum();
 
+    /**
+     * Retrieves the amplitude for the specified component.
+     * @param componentNo The component number.
+     * @return The amplitude (magnitude) for the specified component.
+     */
     double getAmplitude(int componentNo);
 
+    /**
+     * Retrieves the phase in radians for the specified component.
+     * @param componentNo The component number.
+     * @return The phase in radians for the specified component.
+     */
     double getPhase(int componentNo);
 
+    /**
+     * Retrieves the real value of the specified component.
+     * @param componentNo The component number.
+     * @return The real value of the specified component.
+     */
     double getReal(int componentNo);
-
+    /**
+     * Retrieves the imaginary value of the specified component.
+     * @param componentNo The component number.
+     * @return The imaginary value of the specified component.
+     */
     double getImaginary(int componentNo);
 }

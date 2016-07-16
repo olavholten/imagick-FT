@@ -42,7 +42,7 @@ package se.imagick.ft.slidingdft;
 public class DFTSliderImpl implements DFTSlider {
     private final DFTSliderFrequency[] sliderFrequencies;
     private final double noofSamples;
-    private double lastOutValue;
+    private double realSum;
 
     public DFTSliderImpl(int noofFrequencies){
         this.sliderFrequencies = new DFTSliderFrequency[noofFrequencies + 1]; // The +1 is dc
@@ -55,16 +55,16 @@ public class DFTSliderImpl implements DFTSlider {
 
     @Override
     public double slide(double value){
-        double change = (value - lastOutValue) / noofSamples;
-        double outValue = 0d;
+        double change = (value - realSum) / noofSamples;
+        double firsValue = 0d;
 
         for(DFTSliderFrequency freq : sliderFrequencies){
             freq.slide(change);
-            outValue += freq.getReal();
+            firsValue += freq.getReal();
         }
 
-        lastOutValue = outValue;
-        return outValue;
+        realSum = firsValue;
+        return firsValue;
     }
 
     @Override
@@ -79,13 +79,7 @@ public class DFTSliderImpl implements DFTSlider {
 
     @Override
     public double getRealSum(){
-        double outValue = 0d;
-
-        for(DFTSliderFrequency freq : sliderFrequencies){
-            outValue += freq.getReal();
-        }
-
-        return outValue;
+        return realSum;
     }
 
     @Override
