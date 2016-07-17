@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Test of th FTUtils.
+ * Test of the FTUtils.
  *
  * ---------------------
  * The MIT License (MIT)

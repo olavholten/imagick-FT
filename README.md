@@ -6,14 +6,21 @@ using FFT.
 ##Usage is simple:
 
 <pre>
-DFTSlider slider = new DFTSlider(noOfFrequencies); // One component will be added for the dc.
-slider.slide(douleValue); // Adding one sample value to the end of the buffer, and pushing out the first.
-slider.getAmplitude(componentNo);
-slider.getPhase(componentNo);
-slider.getReal(0d); // Retrieves the DC (basically a moving average low pass filter).
-</pre>
+int noOfFrequencies = 16;
+DFTSlider slider = new DFTSliderImpl(noOfFrequencies); // One component will be added for the dc.
+slider.slide(1.0d); // Adding one sample value to the end of the buffer, and pushing out the first.
 
-An example class can be found among the test classes (see se.imagick.ft.examples). 
+int frequencyComponentNo = 3;
+Polar polar3 = slider.getPolar(frequencyComponentNo); // NB! See documentation about instance reuse.
+Complex complex3 = slider.getComplex(frequencyComponentNo); // NB! See documentation about instance reuse.
+
+double magnitude3 = polar3.getMagnitude(); 
+double phase3 = polar3.getPhase();
+double real3 = complex3.getReal();
+double imag3 = complex3.getImaginary();
+
+double realSum = slider.getRealSum(false);
+</pre>
 
 Just add the following dependency in your pom-file:
 
