@@ -2,6 +2,8 @@ package se.imagick.ft.slidingdft;
 
 import org.junit.Assert;
 import org.junit.Test;
+import se.imagick.ft.common.Complex;
+import se.imagick.ft.common.Polar;
 
 public abstract class DFTSliderTestParent {
 
@@ -88,11 +90,50 @@ public abstract class DFTSliderTestParent {
         DFTSlider slider = getSliderWithComponents(4, comp1PhasedPlus90, comp2PhasedMinus90);
         Assert.assertEquals(((int)(comp1PhasedPlus90.length / 2d + 1)), slider.getNoOfFrequencies());
     }
-//
-//    public void gettersAndSetters() {
-//        DFTSlider slider = getSliderWithComponents(4, comp1PhasedPlus90, comp2PhasedMinus90);
-//
-//    }
+
+    @Test
+    public void testRecalculation() {
+        int dc1 = 1;
+        int dc2 = 2;
+        DFTSlider slider = getSliderWithComponents(dc1, comp1);
+        verifyAmplitude(slider, dc1, 1, 0, 0, 0);
+        verifyRealSum(slider, dc1, comp1);
+
+        Complex complex = slider.getComplex(0);
+        complex.setReal(dc2);
+        slider.setComplex(0, complex);
+        verifyRealSum(slider, dc2, true, comp1);
+    }
+
+    @Test
+    public void gettersAndSettersComplex() {
+        int dc1 = 1;
+        DFTSlider slider = getSliderWithComponents(dc1, comp1);
+
+        Polar polar = new Polar(slider.getPolar(3));
+        Complex complex = new Complex(1001, 2002);
+        slider.setComplex(3, complex);
+        Complex complexFromSlider = slider.getComplex(3);
+        Polar polarFromSlider = slider.getPolar(3);
+        Assert.assertTrue(complex.equals(complexFromSlider));
+        Assert.assertNotEquals(polar, polarFromSlider);
+    }
+
+    @Test
+    public void gettersAndSettersPolar() {
+        int dc1 = 1;
+        DFTSlider slider = getSliderWithComponents(dc1, comp1);
+
+        Complex complex = new Complex(slider.getComplex(3));
+        Polar polar = new Polar(1001, 2002);
+        slider.setPolar(3, polar);
+        Polar polarFromSlider = slider.getPolar(3);
+        Complex complexFromSlider = slider.getComplex(3);
+        Assert.assertTrue(polar.equals(polarFromSlider));
+        Assert.assertNotEquals(complex, complexFromSlider);
+    }
+
+
 
     private DFTSlider getSliderWithComponents(double dc, double[]... samplesSeries) {
         DFTSlider slider = getSliderImpl(samplesSeries[0].length / 2);
@@ -130,13 +171,17 @@ public abstract class DFTSliderTestParent {
     }
 
     private void verifyRealSum(DFTSlider slider, double dc, double[]... components) {
+        verifyRealSum(slider, dc, false, components);
+    }
+
+    private void verifyRealSum(DFTSlider slider, double dc, boolean willRecalculate,  double[]... components) {
         double sum = dc;
 
         for(double[] component : components) {
             sum += component[0];
         }
 
-        Assert.assertEquals(slider.getRealSum(false), sum, 0.1d);
+        Assert.assertEquals(slider.getRealSum(willRecalculate), sum, 0.1d);
     }
 
     private double round(double value) {

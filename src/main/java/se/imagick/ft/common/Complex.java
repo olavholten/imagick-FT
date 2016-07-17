@@ -62,10 +62,6 @@ public class Complex {
         this.imaginary = imaginary;
     }
 
-    public boolean equals(Complex that) {
-        return (this.real == that.real) && (this.imaginary == that.imaginary);
-    }
-
     public void copyTo(Complex complex) {
         complex.setReal(real);
         complex.setImaginary(imaginary);
@@ -74,5 +70,9 @@ public class Complex {
     public void copyFrom(Complex complex) {
         real = complex.getReal();
         imaginary = complex.getImaginary();
+    }
+
+    public boolean equals(Complex that) {
+        return (this.real == that.real) && (this.imaginary == that.imaginary);
     }
 }

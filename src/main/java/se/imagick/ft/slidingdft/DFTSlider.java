@@ -69,10 +69,10 @@ public interface DFTSlider {
     /**
      * Retrieves the sum of the real part of all the frequency components
      * (equals the current first sample in the buffer, about to be pushed out in the next slide).
-     * If the frequencis have been altered since last slide, a recalculation is needed.
-     * @param willRecalculate Orders a recalculation of all real parts (use only if any
-     *                        frequency components have been altered since the last slide).
-     * @return The sum of the real part of all the frequency components.
+     * If the frequencies have been altered since last slide, a recalculation is needed.
+     * @param willRecalculate If set to true, a recalculation of all real parts is executed
+     *                        (use only if any frequency components have been altered since the last slide).
+     * @return The sum of the real parts of all the frequency components.
      */
     double getRealSum(boolean willRecalculate);
 

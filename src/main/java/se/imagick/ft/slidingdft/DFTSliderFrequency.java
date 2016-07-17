@@ -36,7 +36,7 @@ public class DFTSliderFrequency {
     private final Polar polar;
     private final double multiplier;
     private final Complex copyComplex;
-    private final Polar copyPolar;
+    private final Polar polarCopy;
     private final boolean isReusing;
 
     public DFTSliderFrequency(double noofFreq, double freqNo) {
@@ -48,7 +48,7 @@ public class DFTSliderFrequency {
         this.complex = new Complex();
         this.polar = new Polar();
         this.copyComplex = new Complex();
-        this.copyPolar = new Polar();
+        this.polarCopy = new Polar();
         this.isReusing = isReusing;
         this.multiplier = (freqNo == 0d || freqNo == noofFreq)?1d : 2d; // See DFT principles (First and last
         // component).
@@ -63,20 +63,22 @@ public class DFTSliderFrequency {
         FTUtils.complex2Polar(complex, polar);
         polar.addPhase(turnDegrees);
         FTUtils.polar2Complex(polar, complex);
-        polar.copyTo(copyPolar);
-        complex.copyTo(copyComplex);
     }
 
     public Complex getComplex() {
-        return (isReusing)?copyComplex : new Complex(copyComplex);
+        Complex complex = (isReusing)?copyComplex:new Complex();
+        complex.copyFrom(this.complex);
+        return complex;
     }
 
-    public void getComplex(Complex complex) {
+    public void setComplex(Complex complex) {
         this.complex.copyFrom(complex);
     }
 
     public Polar getPolar() {
-        return (isReusing)?copyPolar : new Polar(copyPolar);
+        Polar polar = (isReusing)?polarCopy:new Polar();
+        polar.copyFrom(this.polar);
+        return polar;
     }
 
     public void setPolar(Polar polar) {

@@ -109,7 +109,7 @@ public class DFTSliderImpl implements DFTSlider {
 
     @Override
     public void setComplex(int componentNo, Complex complex) {
-        sliderFrequencies[componentNo].getComplex();
+        sliderFrequencies[componentNo].setComplex(complex);
     }
 
     @Override
