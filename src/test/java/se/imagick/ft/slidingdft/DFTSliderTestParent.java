@@ -160,25 +160,6 @@ public abstract class DFTSliderTestParent {
         Assert.assertNotEquals(complex, complexFromSlider);
     }
 
-    public void nothing() {
-        int noOfFrequencies = 16;
-        DFTSlider slider = new DFTSliderImpl(noOfFrequencies); // One component will be added for the dc.
-        slider.slide(1.0d); // Adding one sample value to the end of the buffer, and pushing out the first.
-
-        int frequencyComponentNo = 3;
-        Polar polar3 = slider.getPolar(frequencyComponentNo);
-        Complex complex3 = slider.getComplex(frequencyComponentNo);
-
-        double magnitude3 = polar3.getMagnitude();
-        double phase3 = polar3.getPhase();
-        double real3 = complex3.getReal();
-        double imag3 = complex3.getImaginary();
-
-        double realSum = slider.getRealSum(false);
-    }
-
-
-
     private DFTSlider getSliderWithComponents(double dc, double[]... samplesSeries) {
         DFTSlider slider = getSliderImpl(samplesSeries[0].length / 2);
         double[] tot = addRealComponents(samplesSeries);
