@@ -30,43 +30,56 @@ import se.imagick.ft.common.Polar;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-public class DFTSliderFrequency{
+public class DFTSliderFrequency {
     private final double turnDegrees;
     private final Complex complex;
     private final Polar polar;
     private final double multiplier;
+    private final Complex copyComplex;
+    private final Polar copyPolar;
+    private final boolean isReusing;
 
-    public DFTSliderFrequency(final double noofFreq, final double freqNo){
+    public DFTSliderFrequency(double noofFreq, double freqNo) {
+        this(noofFreq, freqNo, true);
+    }
+
+    public DFTSliderFrequency(double noofFreq, double freqNo, boolean isReusing) {
         this.turnDegrees = (Math.PI / noofFreq) * freqNo;
         this.complex = new Complex();
         this.polar = new Polar();
-        this.multiplier = (freqNo == 0d || freqNo == noofFreq)?1d : 2d; // See DFT principles (First and last component).
+        this.copyComplex = new Complex();
+        this.copyPolar = new Polar();
+        this.isReusing = isReusing;
+        this.multiplier = (freqNo == 0d || freqNo == noofFreq)?1d : 2d; // See DFT principles (First and last
+        // component).
     }
 
-    public void slide(double in, double out){
+    public void slide(double in, double out) {
         slide(in - out);
     }
 
-    public void slide(double change){
+    public void slide(double change) {
         complex.addChangeToReal(change * multiplier);
         FTUtils.complex2Polar(complex, polar);
         polar.addPhase(turnDegrees);
         FTUtils.polar2Complex(polar, complex);
+        polar.copyTo(copyPolar);
+        complex.copyTo(copyComplex);
     }
 
-    public double getAmplitude(){
-        return polar.getMagnitude();
+    public Complex getComplex() {
+        return (isReusing)?copyComplex : new Complex(copyComplex);
     }
 
-    public double getPhase(){
-        return polar.getPhase();
+    public void getComplex(Complex complex) {
+        this.complex.copyFrom(complex);
     }
 
-    public double getReal(){
-        return complex.getReal();
+    public Polar getPolar() {
+        return (isReusing)?copyPolar : new Polar(copyPolar);
     }
 
-    public double getImaginary(){
-        return complex.getImaginary();
+    public void setPolar(Polar polar) {
+        this.polar.copyFrom(polar);
     }
 }

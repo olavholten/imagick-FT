@@ -1,5 +1,8 @@
 package se.imagick.ft.slidingdft;
 
+import se.imagick.ft.common.Complex;
+import se.imagick.ft.common.Polar;
+
 /**
  * Interface for a Java implementation of the DFT-Slider. It is used to re-calculate
  * a FT for a moving window, one sample at a time. This is considerably more efficient
@@ -66,36 +69,44 @@ public interface DFTSlider {
     /**
      * Retrieves the sum of the real part of all the frequency components
      * (equals the current first sample in the buffer, about to be pushed out in the next slide).
+     * If the frequencis have been altered since last slide, a recalculation is needed.
+     * @param willRecalculate Orders a recalculation of all real parts (use only if any
+     *                        frequency components have been altered since the last slide).
      * @return The sum of the real part of all the frequency components.
      */
-    double getRealSum();
+    double getRealSum(boolean willRecalculate);
 
     /**
-     * Retrieves the amplitude for the specified component.
-     * @param componentNo The component number.
-     * @return The amplitude (magnitude) for the specified component.
+     * Retrieves the complex values for the specified frequency component (copy by value).
+     * @return The Complex values for the specified frequency component.
+     * !NB To decrease the need for garbage collection,
+     * the instance returned might be statically used for the frequency component.
+     * @param componentNo The frequency component.
      */
-    double getAmplitude(int componentNo);
+    Complex getComplex(int componentNo);
 
     /**
-     * Retrieves the phase in radians for the specified component.
-     * @param componentNo The component number.
-     * @return The phase in radians for the specified component.
+     * Copies the Complex values to the specified component.
+     * All values (complex and polar) will be updated.
+     * @param componentNo The frequency component.
+     * @param complex The values to be copied to the frequency component.
      */
-    double getPhase(int componentNo);
+    void setComplex(int componentNo, Complex complex);
 
     /**
-     * Retrieves the real value of the specified component.
-     * @param componentNo The component number.
-     * @return The real value of the specified component.
+     * Retrieves the polar values for the specified frequency component (copy by value).
+     * @return The polar values for the specified frequency component.
+     * !NB To decrease the need for garbage collection,
+     * the instance returned might be statically used for the frequency component.
+     * @param componentNo The frequency component.
      */
-    double getReal(int componentNo);
+    Polar getPolar(int componentNo);
+
+
     /**
-     * Retrieves the imaginary value of the specified component.
-     * @param componentNo The component number.
-     * @return The imaginary value of the specified component.
+     * Sets (copy by value) the Polar values to the specified component.
+     * !NB To decrease the need for garbage collection,
+     * the instance returned might be statically used for the frequency component.
      */
-    double getImaginary(int componentNo);
-
-
+    void setPolar(int componentNo, Polar polar);
 }

@@ -1,5 +1,8 @@
 package se.imagick.ft.slidingdft;
 
+import se.imagick.ft.common.Complex;
+import se.imagick.ft.common.Polar;
+
 /**
  * A Java implementation of the DFT-Slider. It is used to re-calculate a FT
  * for a moving window, one sample at a time. This is conciderably more efficient
@@ -44,27 +47,36 @@ public class DFTSliderImpl implements DFTSlider {
     private final double noofSamples;
     private double realSum;
 
+    /**
+     * Creates an instance of DFTSliderImpl that will use recycled Complex and Polar instances.
+     * @param noofFrequencies The number of frequencies used. Frequency zero (dc) will be added.
+     */
     public DFTSliderImpl(int noofFrequencies){
+        this(noofFrequencies, true);
+    }
+
+
+    public DFTSliderImpl(int noofFrequencies, boolean isReusing){
         this.sliderFrequencies = new DFTSliderFrequency[noofFrequencies + 1]; // The +1 is dc
         this.noofSamples = noofFrequencies * 2d;
 
         for(int i = 0; i < noofFrequencies + 1; i++){
-            sliderFrequencies[i] = new DFTSliderFrequency(noofFrequencies, i);
+            sliderFrequencies[i] = new DFTSliderFrequency(noofFrequencies, i, isReusing);
         }
     }
 
     @Override
     public double slide(double value){
         double change = (value - realSum) / noofSamples;
-        double firsValue = 0d;
+        double realSum = 0d;
 
         for(DFTSliderFrequency freq : sliderFrequencies){
             freq.slide(change);
-            firsValue += freq.getReal();
+            realSum += freq.getComplex().getReal();
         }
 
-        realSum = firsValue;
-        return firsValue;
+        this.realSum = realSum;
+        return realSum;
     }
 
     @Override
@@ -78,27 +90,35 @@ public class DFTSliderImpl implements DFTSlider {
     }
 
     @Override
-    public double getRealSum(){
+    public double getRealSum(boolean willRecalculate){
+
+        if(willRecalculate) {
+            realSum = 0d;
+            for(DFTSliderFrequency freq : sliderFrequencies){
+                realSum += freq.getComplex().getReal();
+            }
+        }
+
         return realSum;
     }
 
     @Override
-    public double getAmplitude(int componentNo){
-        return sliderFrequencies[componentNo].getAmplitude();
+    public Complex getComplex(int componentNo) {
+        return sliderFrequencies[componentNo].getComplex();
     }
 
     @Override
-    public double getPhase(int componentNo){
-        return sliderFrequencies[componentNo].getPhase();
+    public void setComplex(int componentNo, Complex complex) {
+        sliderFrequencies[componentNo].getComplex();
     }
 
     @Override
-    public double getReal(int componentNo){
-        return sliderFrequencies[componentNo].getReal();
+    public Polar getPolar(int componentNo) {
+        return sliderFrequencies[componentNo].getPolar();
     }
 
     @Override
-    public double getImaginary(int componentNo){
-        return sliderFrequencies[componentNo].getImaginary();
+    public void setPolar(int componentNo, Polar polar) {
+        sliderFrequencies[componentNo].setPolar(polar);
     }
 }

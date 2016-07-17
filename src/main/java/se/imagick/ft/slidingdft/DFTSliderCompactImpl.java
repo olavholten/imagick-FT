@@ -1,5 +1,9 @@
 package se.imagick.ft.slidingdft;
 
+import se.imagick.ft.common.Complex;
+import se.imagick.ft.common.FTUtils;
+import se.imagick.ft.common.Polar;
+
 /**
  * This is a compact version of the slider, using only one class.
  * Slightly, slightly faster but harder to understand.
@@ -36,11 +40,30 @@ public class DFTSliderCompactImpl implements DFTSlider{
     private final double[] phase;
     private final double[] multi;
     private final double[] turn;
+    private final boolean isReusing;
     private double realSum;
     private final double noofSamples;
     private final double noofComplex;
+    private final Complex copyComplex;
+    private final Polar copyPolar;
 
+    /**
+     * Creates a new instance that will reuse Complex and Polar instances
+     * in getters and setters (to reduce need for garbage collection).
+     * @param noofFrequencies Number och frequences used.
+     */
     public DFTSliderCompactImpl(int noofFrequencies){
+        this(noofFrequencies, true);
+    }
+
+    /**
+     * Creates a new instance.
+     *
+     * @param noofFrequencies Number och frequencies used.
+     * @param isReusing If true, Complex and Polar instances
+     * in getters and setters will be resued (to reduce need for garbage collection).
+     */
+    public DFTSliderCompactImpl(int noofFrequencies, boolean isReusing){
 
         double turnBase = Math.PI * 2d / noofFrequencies;
         this.realSum = 0d;
@@ -52,6 +75,9 @@ public class DFTSliderCompactImpl implements DFTSlider{
         this.phase = new double[(int)this.noofComplex];
         this.multi = new double[(int)this.noofComplex];
         this.turn = new double[(int)this.noofComplex];
+        this.isReusing = isReusing;
+        this.copyComplex = new Complex();
+        this.copyPolar = new Polar();
 
         for(int i = 0; i < this.noofComplex; i++){
             turn[i] = i * turnBase / 2d;
@@ -90,27 +116,52 @@ public class DFTSliderCompactImpl implements DFTSlider{
     }
 
     @Override
-    public double getAmplitude(int componentNo){
-        return  magni[componentNo];
+    public double getRealSum(boolean willRecalculate) {
+        if(willRecalculate) {
+            this.realSum = 0d;
+
+            for(int i = 0; i < noofComplex; i++){
+                this.realSum += real[i];
+            }
+        }
+
+        return this.realSum;
     }
 
     @Override
-    public double getPhase(int componentNo){
-        return phase[componentNo];
+    public Complex getComplex(int componentNo) {
+        Complex complex = (isReusing)?copyComplex:new Complex();
+        complex.setReal(real[componentNo]);
+        complex.setImaginary(imag[componentNo]);
+
+        return complex;
     }
 
     @Override
-    public double getReal(int componentNo){
-        return real[componentNo];
+    public void setComplex(int componentNo, Complex complex) {
+        real[componentNo] = complex.getReal();
+        imag[componentNo] = complex.getImaginary();
+        FTUtils.complex2Polar(complex, copyPolar);
+        magni[componentNo] = copyPolar.getMagnitude();
+        phase[componentNo] = copyPolar.getPhase();
     }
 
     @Override
-    public double getImaginary(int componentNo){
-        return imag[componentNo];
+    public Polar getPolar(int componentNo) {
+        Polar polar = (isReusing)?copyPolar:new Polar();
+        polar.setMagnitude(magni[componentNo]);
+        polar.setPhase(phase[componentNo]);
+
+        return polar;
     }
 
     @Override
-    public double getRealSum() {
-        return realSum;
+    public void setPolar(int componentNo, Polar polar) {
+        magni[componentNo] = polar.getMagnitude();
+        phase[componentNo] = polar.getPhase();
+        FTUtils.polar2Complex(polar, copyComplex);
+        real[componentNo] = copyComplex.getReal();
+        imag[componentNo] = copyComplex.getImaginary();
+
     }
 }

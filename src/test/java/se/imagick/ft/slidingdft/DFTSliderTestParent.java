@@ -46,9 +46,9 @@ public abstract class DFTSliderTestParent {
         DFTSlider slider = getSliderWithComponents(dc, comps);
         verifyAmplitude(slider, 8, 1, 1, 1, 1);
         verifyRealSum(slider, dc, comps);
-        Assert.assertEquals(slider.getReal(0), dc, 0.1);
-        Assert.assertEquals(slider.getImaginary(0), 0, 0.1);
-        Assert.assertEquals(slider.getPhase(0) * 360 / (2 * Math.PI), 180, 0.1);
+        Assert.assertEquals(slider.getComplex(0).getReal(), dc, 0.1);
+        Assert.assertEquals(slider.getComplex(0).getImaginary(), 0, 0.1);
+        Assert.assertEquals(slider.getPolar(0).getPhase() * 360 / (2 * Math.PI), 180, 0.1);
     }
 
     @Test
@@ -64,8 +64,8 @@ public abstract class DFTSliderTestParent {
     public void testJustNegDc() {
         DFTSlider slider = getSliderWithComponents(-8, zeroSamples);
         verifyAmplitude(slider, 8, 0, 0, 0, 0);
-        Assert.assertEquals(slider.getReal(0), -8, 0.1);
-        Assert.assertEquals(slider.getPhase(0) * 360 / (2 * Math.PI), 180, 0.1);
+        Assert.assertEquals(slider.getComplex(0).getReal(), -8, 0.1);
+        Assert.assertEquals(slider.getPolar(0).getPhase() * 360 / (2 * Math.PI), 180, 0.1);
     }
 
     @Test
@@ -88,6 +88,11 @@ public abstract class DFTSliderTestParent {
         DFTSlider slider = getSliderWithComponents(4, comp1PhasedPlus90, comp2PhasedMinus90);
         Assert.assertEquals(((int)(comp1PhasedPlus90.length / 2d + 1)), slider.getNoOfFrequencies());
     }
+//
+//    public void gettersAndSetters() {
+//        DFTSlider slider = getSliderWithComponents(4, comp1PhasedPlus90, comp2PhasedMinus90);
+//
+//    }
 
     private DFTSlider getSliderWithComponents(double dc, double[]... samplesSeries) {
         DFTSlider slider = getSliderImpl(samplesSeries[0].length / 2);
@@ -120,7 +125,7 @@ public abstract class DFTSliderTestParent {
 
     private void verifyAmplitude(DFTSlider slider, double... values) {
         for(int i = 0; i < values.length; i++) {
-            Assert.assertEquals("Component no: " + i, values[i], slider.getAmplitude(i), 0.1);
+            Assert.assertEquals("Component no: " + i, values[i], slider.getPolar(i).getMagnitude(), 0.1);
         }
     }
 
@@ -131,7 +136,7 @@ public abstract class DFTSliderTestParent {
             sum += component[0];
         }
 
-        Assert.assertEquals(slider.getRealSum(), sum, 0.1d);
+        Assert.assertEquals(slider.getRealSum(false), sum, 0.1d);
     }
 
     private double round(double value) {
@@ -139,13 +144,13 @@ public abstract class DFTSliderTestParent {
     }
 
     private double getPhaseInDegrees(DFTSliderCompactImpl slider, int i, double amp) {
-        double degrees = (amp == 0)?0 : (((slider.getPhase(i) * 360) / (2d * Math.PI)) % 360);
+        double degrees = (amp == 0)?0 : (((slider.getPolar(i).getPhase() * 360) / (2d * Math.PI)) % 360);
         return (degrees > 180)?degrees - 360 : degrees;
     }
 
     private void println(DFTSliderCompactImpl slider) {
         for(int i = 0; i < slider.getNoOfFrequencies(); i++) {
-            double amp = round(slider.getAmplitude(i));
+            double amp = round(slider.getPolar(i).getMagnitude());
             double phase = round(getPhaseInDegrees(slider, i, amp));
             System.out.println("[" + amp + ", " + phase + "]");
         }

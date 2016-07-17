@@ -74,25 +74,26 @@ public class DFTSliderFilter{
         double[] sample = new double[channelSliders.length];
 
         for(int channel = 0; channel < channelSliders.length; channel++) {
-            sample[channel] = channelSliders[channel].getRealSum();
+            sample[channel] = channelSliders[channel].getRealSum(false);
         }
 
         return sample;
     }
 
     public double getAmplitude(int channelNo, int componentNo){
-        return channelSliders[channelNo].getAmplitude(componentNo);
+        return channelSliders[channelNo].getPolar(componentNo).getMagnitude();
     }
 
     public double getPhase(int channelNo, int componentNo){
-        return channelSliders[channelNo].getPhase(componentNo);
+
+        return channelSliders[channelNo].getPolar(componentNo).getPhase();
     }
 
     public double getImaginary(int channelNo, int componentNo) {
-        return channelSliders[channelNo].getImaginary(componentNo);
+        return channelSliders[channelNo].getComplex(componentNo).getImaginary();
     }
 
     public double getReal(int channelNo, int componentNo) {
-        return channelSliders[channelNo].getReal(componentNo);
+        return channelSliders[channelNo].getComplex(componentNo).getReal();
     }
 }

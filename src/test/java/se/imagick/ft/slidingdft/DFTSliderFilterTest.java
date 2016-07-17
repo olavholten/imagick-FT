@@ -47,10 +47,10 @@ public class DFTSliderFilterTest {
             DFTSlider slider = sliders[channelNo];
 
             for(int compNo = 0; compNo < slider.getNoOfFrequencies(); compNo++) {
-                Assert.assertEquals(filter.getAmplitude(channelNo, compNo), slider.getAmplitude(compNo), 0.0001);
-                Assert.assertEquals(filter.getPhase(channelNo, compNo), slider.getPhase(compNo), 0.0001);
-                Assert.assertEquals(filter.getReal(channelNo, compNo), slider.getReal(compNo), 0.0001);
-                Assert.assertEquals(filter.getImaginary(channelNo, compNo), slider.getImaginary(compNo), 0.0001);
+                Assert.assertEquals(filter.getAmplitude(channelNo, compNo), slider.getPolar(compNo).getMagnitude(), 0.0001);
+                Assert.assertEquals(filter.getPhase(channelNo, compNo), slider.getPolar(compNo).getPhase(), 0.0001);
+                Assert.assertEquals(filter.getReal(channelNo, compNo), slider.getComplex(compNo).getReal(), 0.0001);
+                Assert.assertEquals(filter.getImaginary(channelNo, compNo), slider.getComplex(compNo).getImaginary(), 0.0001);
             }
         }
     }

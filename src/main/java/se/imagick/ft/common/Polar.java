@@ -26,48 +26,58 @@ package se.imagick.ft.common;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-public class Polar{
+public class Polar {
     private double magnitude;
     private double phase;
 
-    /**
-     * @param magnitude The magnitude (real value).
-     * @param phase     The phase (imaginary value).
-     */
-    public Polar(final double magnitude, final double phase){
+    public Polar() {
+    }
+
+    public Polar(Polar polar) {
+        this(polar.getMagnitude(), polar.getPhase());
+    }
+
+    public Polar(final double magnitude, final double phase) {
         this.magnitude = magnitude;
         this.phase = phase;
     }
 
-    public Polar(){
-    }
-
-    public double getMagnitude(){
+    public double getMagnitude() {
         return magnitude;
     }
 
-    public void setMagnitude(final double magnitude){
+    public void setMagnitude(final double magnitude) {
         this.magnitude = magnitude;
     }
 
-    public double getPhase(){
+    public double getPhase() {
         return phase;
     }
 
-    public void setPhase(final double phase){
+    public void setPhase(final double phase) {
         this.phase = phase;
     }
 
-    public void addPhase(final double phaseTurn){
+    public void addPhase(final double phaseTurn) {
         this.phase += phaseTurn;
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return "[M:" + magnitude + "P:" + phase + "]";
     }
 
     public boolean equals(Polar that) {
         return (this.magnitude == that.magnitude) && (this.phase == that.phase);
+    }
+
+    public void copyTo(Polar polar) {
+        polar.setMagnitude(magnitude);
+        polar.setPhase(phase);
+    }
+
+    public void copyFrom(Polar polar) {
+        this.magnitude = polar.getMagnitude();
+        this.phase = polar.getPhase();
     }
 }

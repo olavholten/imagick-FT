@@ -26,38 +26,53 @@ package se.imagick.ft.common;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-public class Complex{
+public class Complex {
     private double real;
     private double imaginary;
 
-    public Complex(){}
+    public Complex() {
+    }
 
-    public Complex(double real, double imaginary){
+    public Complex(Complex complex) {
+        this(complex.getReal(), complex.getImaginary());
+    }
+
+    public Complex(double real, double imaginary) {
         this.real = real;
         this.imaginary = imaginary;
     }
 
-    public double getReal(){
+    public double getReal() {
         return real;
     }
 
-    public void setReal(final double real){
+    public void setReal(final double real) {
         this.real = real;
     }
 
-    public void addChangeToReal(final double change){
+    public void addChangeToReal(final double change) {
         this.real += change;
     }
 
-    public double getImaginary(){
+    public double getImaginary() {
         return imaginary;
     }
 
-    public void setImaginary(final double imaginary){
+    public void setImaginary(final double imaginary) {
         this.imaginary = imaginary;
     }
 
     public boolean equals(Complex that) {
         return (this.real == that.real) && (this.imaginary == that.imaginary);
+    }
+
+    public void copyTo(Complex complex) {
+        complex.setReal(real);
+        complex.setImaginary(imaginary);
+    }
+
+    public void copyFrom(Complex complex) {
+        real = complex.getReal();
+        imaginary = complex.getImaginary();
     }
 }
