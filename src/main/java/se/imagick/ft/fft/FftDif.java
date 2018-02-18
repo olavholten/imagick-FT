@@ -96,13 +96,13 @@ public class FftDif {
 
         for (int i = 0; i < dftSize; i++) {
             re[i] = realValues[decompArray[i]] / this.size;
-            im[i] = imagValues[decompArray[i]] / this.size;
+            im[i] = -imagValues[decompArray[i]] / this.size;
         }
 
         // Now process the negative frequencies.
         for (int i = 1; i < dftSize - 1; i++) {
             re[i] += realValues[decompArray[(int) (size - i)]] / this.size;
-            im[i] += -imagValues[decompArray[(int) (size - i)]] / this.size;
+            im[i] += imagValues[decompArray[(int) (size - i)]] / this.size;
         }
 
         double[][] complexValues = new double[2][];
