@@ -45,7 +45,7 @@ public class FftDif {
      * The number of indexes can be computed as follows: noOfFrequencies / 2 + 1 (dc).
      * The frequencies are in frequency order starting with zero.
      */
-    public double[][] execute(double[] realValuesIn) {
+    public double[][] forward(double[] realValuesIn) {
 
         if (realValuesIn.length != this.size) {
             throw new IllegalArgumentException("Wrong array length!");
@@ -53,6 +53,59 @@ public class FftDif {
 
         double[] realValues = realValuesIn.clone();
         double[] imagValues = new double[realValues.length];
+
+
+        double[][] complexArrays = fftInternal(realValues, imagValues);
+
+        realValues = complexArrays[0];
+        imagValues = complexArrays[1];
+
+        int dftSize = (int) (size / 2 + 1);
+        double[] re = new double[dftSize];
+        double[] im = new double[dftSize];
+
+        for (int i = 0; i < dftSize; i++) {
+            re[i] = realValues[decompArray[i]] / this.size;
+            im[i] = -imagValues[decompArray[i]] / this.size;
+        }
+
+        // Now process the negative frequencies.
+        for (int i = 1; i < dftSize - 1; i++) {
+            re[i] += realValues[decompArray[(int) (size - i)]] / this.size;
+            im[i] += imagValues[decompArray[(int) (size - i)]] / this.size;
+        }
+
+        complexArrays[0] = re;
+        complexArrays[1] = im;
+
+        return complexArrays;
+    }
+
+    public double[] inverse(double[] realValuesIn, double[] imagValuesIn) {
+
+        if (2 * (realValuesIn.length - 1) != this.size) {
+            throw new IllegalArgumentException("Wrong array length!");
+        }
+
+        double[] realValues = new double[(int) size];
+        double[] imagValues = new double[(int) size];
+
+        System.arraycopy(realValuesIn, 0, realValues, 0, realValuesIn.length);
+        System.arraycopy(imagValuesIn, 0, imagValues, 0, imagValuesIn.length);
+
+        double[] realInverse = fftInternal(realValues, imagValues)[0];
+
+        double[] re = new double[(int) size];
+
+        for (int i = 0; i < size; i++) {
+            re[i] = realInverse[decompArray[i]];
+        }
+
+        return re;
+    }
+
+    private double[][] fftInternal(double[] realValues, double[] imagValues) {
+
         int sinStep = 1;
 
         for (int butterflySize = (int) size; butterflySize > 1; butterflySize /= 2) {
@@ -90,24 +143,9 @@ public class FftDif {
             sinStep *= 2;
         }
 
-        int dftSize = (int) (size / 2 + 1);
-        double[] re = new double[dftSize];
-        double[] im = new double[dftSize];
-
-        for (int i = 0; i < dftSize; i++) {
-            re[i] = realValues[decompArray[i]] / this.size;
-            im[i] = -imagValues[decompArray[i]] / this.size;
-        }
-
-        // Now process the negative frequencies.
-        for (int i = 1; i < dftSize - 1; i++) {
-            re[i] += realValues[decompArray[(int) (size - i)]] / this.size;
-            im[i] += imagValues[decompArray[(int) (size - i)]] / this.size;
-        }
-
         double[][] complexValues = new double[2][];
-        complexValues[0] = re;
-        complexValues[1] = im;
+        complexValues[0] = realValues;
+        complexValues[1] = imagValues;
 
         return complexValues;
     }

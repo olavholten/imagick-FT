@@ -19,7 +19,7 @@ public class FftDifTest {
         double[] realValues = getSine(size, freq, amplitude, phase);
 
         FftDif fftDif = new FftDif((int) size);
-        double[][] complexArrays = fftDif.execute(realValues);
+        double[][] complexArrays = fftDif.forward(realValues);
 
         assertFrequencies(0, 0, 0, complexArrays);
         assertFrequencies(1, amplitude, phase, complexArrays);
@@ -27,6 +27,7 @@ public class FftDifTest {
         assertFrequencies(3, 0, 0, complexArrays);
         assertFrequencies(4, 0, 0, complexArrays);
     }
+
     @Test
     public void executeGivesCorrectOutputForEvenFrequency() {
 
@@ -38,13 +39,48 @@ public class FftDifTest {
         double[] realValues = getSine(size, freq, amplitude, phase);
 
         FftDif fftDif = new FftDif((int) size);
-        double[][] complexArrays = fftDif.execute(realValues);
+        double[][] complexArrays = fftDif.forward(realValues);
 
         assertFrequencies(0, 0, 0, complexArrays);
         assertFrequencies(1, 0, 0, complexArrays);
         assertFrequencies(2, amplitude, phase, complexArrays);
         assertFrequencies(3, 0, 0, complexArrays);
         assertFrequencies(4, 0, 0, complexArrays);
+    }
+
+    @Test
+    public void executeInverseGivesCorrectOutputForOddFrequency() {
+
+        double size = 8d;
+        double freq = 3d;
+        double amplitude = 1.3d;
+        double phase = 2.5;
+
+        double[] realValues = getSine(size, freq, amplitude, phase);
+
+        FftDif fftDif = new FftDif((int) size);
+        double[][] complexArrays = fftDif.forward(realValues);
+        double[] inverse = fftDif.inverse(complexArrays[0], complexArrays[1]);
+
+        for(int i = 0; i < size; i++) {
+            Assert.assertEquals(realValues[i], inverse[i], 0.00001);
+        }
+    }
+
+    @Test
+    public void executeInverseGivesSameOutputAsInputToForward() {
+
+        double size = 16d;
+
+        double[] realValues = new double[]{1,2,-3,4,5,6,7,-7312,1,2,3,4,-5,6,7,8};
+
+        FftDif fftDif = new FftDif((int) size);
+        double[][] complexArrays = fftDif.forward(realValues);
+        double[] inverse = fftDif.inverse(complexArrays[0], complexArrays[1]);
+
+        for(int i = 0; i < size; i++) {
+            Assert.assertEquals(realValues[i], inverse[i], 0.0000001);
+        }
     }
 
     private void assertFrequencies(int freq, double amplitude, double phase, double[][] complexArrays) {
