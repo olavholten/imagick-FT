@@ -1,10 +1,5 @@
 steps:
-  - name: "gcr.io/cloud-builders/javac"
-#    args:
-#      - "${_JAVA}"
-    timeout: 500s
-artifacts:
-  objects:
-    location: "gs://${github_builds}/"
-    paths:
-#      - "${_CLASS}"
+  - name: 'gcr.io/cloud-builders/mvn'
+    args: ['install']
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/turing-runner-229609/imagick-ft', '.']
