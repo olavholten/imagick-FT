@@ -4,4 +4,4 @@ steps:
 artifacts:
   objects:
     location: 'gs://github-artifacts/ft'
-#    paths: [['ft']]
+    paths: [['ft']]
