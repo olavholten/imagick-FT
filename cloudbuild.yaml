@@ -4,4 +4,4 @@ steps:
 artifacts:
   objects:
     location: ['github-artifacts']
-    paths: ['ft']
+    paths: [['ft']]
