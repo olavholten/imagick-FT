@@ -4,4 +4,4 @@ steps:
 artifacts:
   objects:
     location: 'gs://github-artifacts'
-    paths: ['*.jar']
+    paths: ['target/ft']
