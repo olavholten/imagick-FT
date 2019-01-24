@@ -3,5 +3,5 @@ steps:
     args: ['install']
 artifacts:
   objects:
-    location: ['github-artifacts']
-#    paths: [['ft']]
+    location: 'gs://github-artifacts/ft'
+    paths: [['ft']]
