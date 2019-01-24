@@ -6,5 +6,5 @@ steps:
 artifacts:
   objects:
     location: "gs://${github_builds}/"
-#    paths:
+    paths:
 #      - "${_CLASS}"
