@@ -3,5 +3,5 @@ steps:
     args: ['install']
 artifacts:
   objects:
-    location: ['github_artifacts']
+    location: ['github-artifacts']
     paths: ['ft']
