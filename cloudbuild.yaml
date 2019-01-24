@@ -1,4 +1,7 @@
 steps:
   - name: 'gcr.io/cloud-builders/mvn'
     args: ['install']
-
+artifacts:
+  objects:
+    location: ['github_artifacts']
+    paths: [['/ft']]
