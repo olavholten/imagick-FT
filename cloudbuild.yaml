@@ -1,10 +1,10 @@
 steps:
   - name: "gcr.io/cloud-builders/javac"
-    args:
-      - "${_JAVA}"
+#    args:
+#      - "${_JAVA}"
     timeout: 500s
 artifacts:
   objects:
-    location: "gs://${_BUCKET}/"
-    paths:
-      - "${_CLASS}"
+    location: "gs://${github_builds}/"
+#    paths:
+#      - "${_CLASS}"
